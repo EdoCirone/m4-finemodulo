@@ -4,7 +4,7 @@ public class Bomb : MonoBehaviour
 {
     [Header("Raggio di attivazione ed esplosione")]
     [SerializeField] private float _activationRadius = 3f;
-    [SerializeField] private float _explosionRadius = 5f;
+    //[SerializeField] private float _explosionRadius = 5f;
 
     [Header("Forza e danni dell'esplosione")]
     [SerializeField] private float _explosionForce = 3f;
@@ -78,14 +78,14 @@ public class Bomb : MonoBehaviour
             }
         }
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _activationRadius);
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, _explosionRadius);
+        //Gizmos.color = Color.white;
+        //Gizmos.DrawWireSphere(transform.position, _explosionRadius);
     }
 }
