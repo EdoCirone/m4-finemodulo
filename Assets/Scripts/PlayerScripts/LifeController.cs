@@ -12,10 +12,6 @@ public class LifeController : MonoBehaviour
         _hp = _maxHp;
     }
 
-    private void Update()
-    {
-      
-    }
     public void AddHp(int hp) { _hp = Mathf.Min(_hp + hp,_maxHp); }
     public void RemoveHp(int hp) { _hp = Mathf.Max(_hp - hp, 0);
     

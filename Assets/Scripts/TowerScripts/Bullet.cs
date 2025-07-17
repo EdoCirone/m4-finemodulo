@@ -58,6 +58,6 @@ public class Bullet : MonoBehaviour
 
     private void DeSpawn()
     {
-        gameObject.SetActive(false);
+        
     }
 }

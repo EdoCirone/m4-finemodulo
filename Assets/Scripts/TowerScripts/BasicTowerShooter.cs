@@ -21,9 +21,17 @@ public class BasicTowerShooter : MonoBehaviour
 
     private float _lastShootTime;
     private Transform _currentTarget; //Mi serve per tenere a mente l'ultima posizione del target ed evitare scatti nella rotazione della testa
+    public Queue<Bullet> _bulletPool;
 
     private void Start()
     {
+        _bulletPool = new Queue<Bullet>();
+        for (int i = 0; i < 5; i++)
+        {
+           Bullet bullet =  Instantiate(_bullet);
+           bullet.gameObject.SetActive(false);
+           _bulletPool.Enqueue(bullet);
+        }
         _lastShootTime = 0;
     }
 
@@ -80,6 +88,25 @@ public class BasicTowerShooter : MonoBehaviour
     }
 
 
+    public Bullet GetBullet()
+    {
 
+        if(_bulletPool.Count > 0)
+        {
+            Bullet bullet = _bulletPool.Dequeue();
+            bullet.gameObject.SetActive(true);
+            _bullet = bullet;
+        }
+        else { Instantiate(_bullet); }
+
+            return _bullet;
+    }
+
+    public void RelaseBullet(Bullet bullet)
+    {
+
+        bullet.gameObject.SetActive(false);
+        _bulletPool.Enqueue(bullet);
+    }
 
 }
