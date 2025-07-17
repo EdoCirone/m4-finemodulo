@@ -3,14 +3,18 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     [Header("Riferimenti")]
-    [SerializeField] private Transform _cameraPivot;
+    [SerializeField] private Transform _cameraPivot;     // Nodo che ruota sull'asse Y (orizzontale)
+    [SerializeField] private Transform _cameraPitch;    // Nodo figlio che ruota sull'asse X (verticale)
     [SerializeField] private Transform _player;
 
     [Header("Sensibilità")]
     [SerializeField] private float _rotationSpeed = 3f;
+    [SerializeField] private float _minPitch = -30f;
+    [SerializeField] private float _maxPitch = 60f;
 
     private Vector2 _mouseInput;
     private bool _cameraMovementRequested;
+    private float _currentPitch = 0f;
 
     private void Update()
     {
@@ -21,21 +25,24 @@ public class CameraManager : MonoBehaviour
 
     private void ReadInput()
     {
-        // Usa gli assi standard del mouse
         _mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-        _cameraMovementRequested = Input.GetMouseButton(0); // tiene premuto, non solo click singolo
+        _cameraMovementRequested = Input.GetMouseButton(0); 
     }
 
     private void CameraRotation()
     {
         if (!_cameraMovementRequested) return;
 
-        // Ruota attorno all'asse Y (orizzontale)
-        _cameraPivot.Rotate(Vector3.up, _mouseInput.x * _rotationSpeed, Space.World);
+        // Rotazione orizzontale del pivot (yaw)
+        _cameraPivot.Rotate(Vector3.up * _mouseInput.x * _rotationSpeed, Space.Self);
 
-        // Ruota attorno all'asse X (verticale, invertito)
-        _cameraPivot.Rotate(Vector3.right, -_mouseInput.y * _rotationSpeed, Space.Self);
+        // Gestione del pitch (rotazione verticale)
+        _currentPitch = Mathf.Clamp(_currentPitch - _mouseInput.y * _rotationSpeed, _minPitch, _maxPitch);
+        _cameraPitch.localEulerAngles = new Vector3(_currentPitch, 0f, 0f);
     }
 
-    private void FollowPlayer() => _cameraPivot.position = _player.position;
+    private void FollowPlayer()
+    {
+        _cameraPivot.position = _player.position;
+    }
 }

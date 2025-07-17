@@ -196,6 +196,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57d3c990815ad1b4387cbb621ce378c9, type: 3}
+--- !u!4 &990862783 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3991743675022908655, guid: cbaa94b5fefee094089ec8f0e1a2aafd,
+    type: 3}
+  m_PrefabInstance: {fileID: 3463049919352762193}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1009204908 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3684313685088985015, guid: cbaa94b5fefee094089ec8f0e1a2aafd,
@@ -494,6 +500,11 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 441006657}
+    - target: {fileID: 5867856287299003949, guid: 174f3804dc60ef0439c48a56fd0e4ef0,
+        type: 3}
+      propertyPath: _cameraPitch
+      value: 
+      objectReference: {fileID: 990862783}
     - target: {fileID: 5867856287299003949, guid: 174f3804dc60ef0439c48a56fd0e4ef0,
         type: 3}
       propertyPath: _cameraPivot
