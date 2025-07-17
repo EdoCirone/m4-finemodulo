@@ -55,7 +55,7 @@ MonoBehaviour:
   _maxJumpCount: 2
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   _groundCheckDistance: 1.1
 --- !u!54 &3215105949278802205
 Rigidbody:
@@ -119,6 +119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a5d642f0688be47a6bdebf83f1acf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHp: 100
+  _hp: 0
+  _deathHeight: -10
 --- !u!1 &2894194961218422810
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,89 +2,141 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    enum MovementType { Normal, Tank }
+    // Tipo di movimento selezionabile
+    private enum MovementType { Normal, Tank }
 
-    [SerializeField] private MovementType _movementType;
+    [Header("Movimento")]
+    [SerializeField] private MovementType _movementType = MovementType.Normal;
     [SerializeField] private float _moveSpeed = 4f;
     [SerializeField] private float _rotationSpeed = 5f;
+
+    [Header("Salto")]
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private int _maxJumpCount = 2;
-    [SerializeField] private LayerMask _groundLayer;
+
+    [Header("Ground Checker")]
     [SerializeField] private float _groundCheckDistance = 1.1f;
+    [SerializeField] private LayerMask _groundLayer;
 
-    private float _horizontalInput;
-    private float _verticalInput;
-    private int _jumpCount = 0;
-    private bool _jumpInput;
-
+    // Input & stato
     private Rigidbody _rb;
+    private Vector2 _moveInput;
+    private bool _jumpRequested;
+    private int _currentJumpCount;
 
-    void Start()
+    private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    private void Update()
     {
-        _jumpInput = Input.GetButtonDown("Jump");
-        _horizontalInput = Input.GetAxis("Horizontal");
-        _verticalInput = Input.GetAxis("Vertical");
+        ReadInput(); // Legge input ogni frame
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
+    {
+        Movement(); // Movimento in base alla modalità selezionata
+        Jump();     // Gestione salto
+    }
+
+    /// <summary>
+    /// Legge gli input da tastiera/controller.
+    /// </summary>
+    private void ReadInput()
+    {
+        _moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")); //Questo l'ha suggerito copilot, mi son fidato perchè sembra elegante!
+        _jumpRequested = Input.GetButtonDown("Jump");
+    }
+
+    /// <summary>
+    /// Seleziona il tipo di movimento (normale o tank).
+    /// </summary>
+    private void Movement()
     {
         switch (_movementType)
         {
             case MovementType.Normal:
-                MovePlayer();
+                NormalMovement();
                 break;
+
             case MovementType.Tank:
                 TankMovement();
                 break;
         }
-
-        if (IsGrounded()) _jumpCount = 0;
-        Jump();
     }
 
-    private void MovePlayer()
+    /// <summary>
+    /// Movimento "free" in tutte le direzioni con rotazione verso la direzione.
+    /// </summary>
+    private void NormalMovement()
     {
-        Vector3 moveDirection = new Vector3(_horizontalInput, 0, _verticalInput).normalized;
-        if (moveDirection.magnitude >= 0.1f)
+        Vector3 direction = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
+
+        if (direction.sqrMagnitude > 0.01f)
         {
-            float angle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(0f, angle, 0f);
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg; // Il Rad2Deg trasforma i radianti in gradi, sono impazzito dietro sta roba...
+            Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.fixedDeltaTime);
-            _rb.MovePosition(_rb.position + moveDirection * _moveSpeed * Time.fixedDeltaTime);
+
+            Vector3 movement = direction * _moveSpeed * Time.fixedDeltaTime;
+            _rb.MovePosition(_rb.position + movement);
         }
     }
 
+    /// <summary>
+    /// Movimento tipo tank: avanti/indietro + rotazione orizzontale.
+    /// </summary>
     private void TankMovement()
     {
-        _rb.MovePosition(_rb.position + transform.forward * _verticalInput * _moveSpeed * Time.fixedDeltaTime);
-        float tankRotationSpeed = _rotationSpeed * 10;
-        _rb.MoveRotation(_rb.rotation * Quaternion.Euler(0, _horizontalInput * tankRotationSpeed * Time.fixedDeltaTime, 0));
+        float moveAmount = _moveInput.y * _moveSpeed * Time.fixedDeltaTime;
+        float rotationAmount = _moveInput.x * _rotationSpeed * 10f * Time.fixedDeltaTime;
+
+        _rb.MovePosition(_rb.position + transform.forward * moveAmount);
+        _rb.MoveRotation(_rb.rotation * Quaternion.Euler(0f, rotationAmount, 0f));
     }
 
-    private bool IsGrounded()
-    {
-        return Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, _groundCheckDistance, _groundLayer);
-    }
-
+    /// <summary>
+    /// Gestione del salto.
+    /// </summary>
     private void Jump()
     {
-        if (_jumpInput && _jumpCount < _maxJumpCount)
+        // Se a terra e cadendo lentamente, azzera il conteggio dei salti
+        if (IsGrounded() && _rb.velocity.y <= 0.1f)
         {
-            _jumpCount++;
-            _rb.velocity = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z);
+            _currentJumpCount = 0;
+        }
+
+        // Se premuto "Jump" e ho ancora salti disponibili
+        if (_jumpRequested && _currentJumpCount < _maxJumpCount)
+        {
+            _currentJumpCount++;
+
+            // Reset componente verticale per evitare accumuli
+            Vector3 velocity = _rb.velocity;
+            velocity.y = 0;
+            _rb.velocity = velocity;
+
             _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         }
     }
 
+    /// <summary>
+    /// Controlla se il personaggio è a terra usando un raycast.
+    /// </summary>
+    private bool IsGrounded()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        return Physics.Raycast(origin, Vector3.down, _groundCheckDistance, _groundLayer);
+    }
+
+    /// <summary>
+    /// Visualizza il raycast per il controllo del terreno nell'editor.
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Vector3 rayStart = transform.position + Vector3.up * 0.1f;
-        Gizmos.DrawLine(rayStart, rayStart + Vector3.down * _groundCheckDistance);
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        Gizmos.DrawLine(origin, origin + Vector3.down * _groundCheckDistance);
     }
 }
