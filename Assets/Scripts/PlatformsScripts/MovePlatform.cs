@@ -1,11 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 
 public class MovePlatform : AbstractPlatform
 {
     [Header("Proprietà Movimento")]
-    [SerializeField] private float _movementValue = 90f;             // Ampiezza del movimento
+    [SerializeField] private float _movementValue = 3f;             // Ampiezza del movimento
     [SerializeField] private Vector3 _movementAxis = Vector3.right;  // Direzione del movimento
 
     private Vector3 _basePosition; // Posizione iniziale della piattaforma
@@ -62,5 +63,12 @@ public class MovePlatform : AbstractPlatform
         // Time.time - _startTime serve per rispettare l'eventuale offset iniziale
         float pingPong = Mathf.PingPong((Time.time - _startTime) * _frequency, _movementValue);
         transform.position = _basePosition + _movementAxis * pingPong;
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere( _basePosition + _movementAxis * _movementValue, 0.1f);
     }
 }
