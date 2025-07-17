@@ -68,7 +68,11 @@ public class MovePlatform : AbstractPlatform
 
     private void OnDrawGizmos()
     {
+        // Se siamo in play mode usa _basePosition, altrimenti prendi transform.position attuale
+
+        Vector3 basePos = Application.isPlaying ? _basePosition : transform.position;
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere( _basePosition + _movementAxis * _movementValue, 0.1f);
+        Gizmos.DrawWireSphere(basePos + _movementAxis * _movementValue, 0.1f);
     }
 }
