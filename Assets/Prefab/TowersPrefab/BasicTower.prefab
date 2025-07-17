@@ -151,15 +151,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletSpawner: {fileID: 72769074219040923}
-  _bullet: {fileID: 3003911998624862840, guid: 58180516f9b61b64fb08c73bdfa945fa, type: 3}
-  _bulletSpeed: 5
-  _coolDown: 3
+  _activationRadius: 15
+  _bulletTag: BasicBullet
+  _coolDown: 1
   _canAim: 0
-  _aimRadius: 5
-  _head: {fileID: 0}
+  _aimSpeed: 10
+  _head: {fileID: 5661254081356536721}
   _playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1 &4644178198548204057
 GameObject:
   m_ObjectHideFlags: 0

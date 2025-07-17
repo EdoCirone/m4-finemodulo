@@ -30,7 +30,7 @@ public class Bomb : MonoBehaviour
         _originalScale = transform.localScale;
     }
 
-    private void Update()
+    protected void Update()
     {
         if (!_isActivated)
         {
@@ -56,7 +56,7 @@ public class Bomb : MonoBehaviour
         }
     }
 
-    private void Explode()
+    protected void Explode()
     {
         for (int i = 0; i < _playerCount; i++)
         {

@@ -1,112 +1,97 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicTowerShooter : MonoBehaviour
 {
-    [Header("componenti da settare")]
-    [SerializeField] Transform _bulletSpawner;
+    [Header("Componenti")]
+    [SerializeField] private Transform _bulletSpawner;
+    [SerializeField] private float _activationRadius = 5f;
 
+    [Header("Proiettili")]
+    [SerializeField] string _bulletTag = "basic"; // Scegli il tipo di proiettile dal PoolManager
+    [SerializeField] private float _coolDown = 1f;
 
-    [Header("Gestione dei Proiettili")]
-    [SerializeField] Bullet _bullet;
-    [SerializeField] float _bulletSpeed;
-    [SerializeField] float _coolDown;
-
-    [Header("Gestione dell'Aim")]
-    [SerializeField] bool _canAim;
-    [SerializeField] float _aimRadius = 5f;
-    [SerializeField] Transform _head;
-    [SerializeField] LayerMask _playerLayer;
+    [Header("Sistema di mira")]
+    [SerializeField] private bool _canAim = true;
+    [SerializeField] private float _aimSpeed = 5f;
+    [SerializeField] private Transform _head;        // La parte che ruota verso il bersaglio
+    [SerializeField] private LayerMask _playerLayer; // Serve per trovare il player
 
     private float _lastShootTime;
-    private Transform _currentTarget; //Mi serve per tenere a mente l'ultima posizione del target ed evitare scatti nella rotazione della testa
-    public Queue<Bullet> _bulletPool;
-
-    private void Start()
-    {
-        _bulletPool = new Queue<Bullet>();
-        for (int i = 0; i < 5; i++)
-        {
-           Bullet bullet =  Instantiate(_bullet);
-           bullet.gameObject.SetActive(false);
-           _bulletPool.Enqueue(bullet);
-        }
-        _lastShootTime = 0;
-    }
+    private Transform _currentTarget; // Per mantenere la rotazione fluida
+    Collider[] hits = new Collider[1];
 
     private void Update()
     {
-        if (_canAim) { Aim(); }
-        if (CanShoot()) { Shoot() ; }
-    }
-    private void Shoot()
-    {
-        Vector3 shootDirection = _bulletSpawner.forward;
-        Bullet b = Instantiate(_bullet, _bulletSpawner.position, Quaternion.LookRotation(shootDirection));
-        b.Shoot(shootDirection);
-
+        if (_canAim) Aim();
+        if (CanShoot()) Shoot();
     }
 
+    /// <summary>
+    /// Controlla se è passato abbastanza tempo per sparare.
+    /// </summary>
     private bool CanShoot()
     {
-        if (Time.time - _lastShootTime > _coolDown)
+        if ((Time.time - _lastShootTime >= _coolDown) && IsPlayerInRange())
         {
             _lastShootTime = Time.time;
             return true;
         }
-        else { return false; }
-
+        return false;
     }
 
+    private bool IsPlayerInRange()
+    {
+        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, _activationRadius, hits, _playerLayer);
+        return hitCount > 0;
+    }
+
+
+    /// <summary>
+    /// Spara un proiettile nella direzione attuale dello spawner.
+    /// </summary>
+    private void Shoot()
+    {
+        Vector3 shootDirection = _bulletSpawner.forward;
+
+        IPooledObject pooled = PoolManager.Instance.SpawnFromPool(_bulletTag, _bulletSpawner.position, Quaternion.LookRotation(shootDirection));
+        Bullet bullet = pooled as Bullet;
+
+        if (bullet != null)
+        {
+            bullet.Shoot(shootDirection);
+        }
+    }
+
+    /// <summary>
+    /// Trova un target e ruota la testa verso di esso.
+    /// </summary>
     private void Aim()
     {
-        if (_currentTarget == null)
+        if (_currentTarget == null && IsPlayerInRange())
         {
-            Collider[] players = Physics.OverlapSphere(transform.position, _aimRadius, _playerLayer);
-            if (players.Length > 0)
-            {
-                _currentTarget = players[0].transform;
-            }
+            _currentTarget = hits[0].transform;
         }
 
         if (_currentTarget != null)
         {
             Vector3 targetPos = _currentTarget.position;
-            targetPos.y = _head.position.y;
+            targetPos.y = _head.position.y; // Ignora la differenza in altezza
 
-            Quaternion targetRotation = Quaternion.LookRotation(targetPos - _head.position);
-            _head.rotation = Quaternion.Slerp(_head.rotation, targetRotation, Time.deltaTime * 5f);
+            Quaternion lookRotation = Quaternion.LookRotation(targetPos - _head.position);
+            _head.rotation = Quaternion.Slerp(_head.rotation, lookRotation, Time.deltaTime * _aimSpeed);
 
-            // Se il bersaglio è troppo lontano, resetta
             float distance = Vector3.Distance(transform.position, _currentTarget.position);
-            if (distance > _aimRadius * 1.2f) // con margine
-            {
+            if (distance > _activationRadius * 1.2f) // Se esce dal raggio, resetta
                 _currentTarget = null;
-            }
         }
     }
 
 
-    public Bullet GetBullet()
+    private void OnDrawGizmosSelected()
     {
-
-        if(_bulletPool.Count > 0)
-        {
-            Bullet bullet = _bulletPool.Dequeue();
-            bullet.gameObject.SetActive(true);
-            _bullet = bullet;
-        }
-        else { Instantiate(_bullet); }
-
-            return _bullet;
-    }
-
-    public void RelaseBullet(Bullet bullet)
-    {
-
-        bullet.gameObject.SetActive(false);
-        _bulletPool.Enqueue(bullet);
+        // Mostra raggio di mira in editor
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _activationRadius);
     }
 
 }
