@@ -1,22 +1,27 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Piattaforma che cambia scala nel tempo, con due modalità:
+/// - Comportamento a step (riduzione/ripristino scala)
+/// - Comportamento continuo (oscillazione sinusoidale)
+/// </summary>
 public class ScalePlatform : AbstractPlatform
 {
     [Header("Proprietà Scala")]
-    [SerializeField] private float _scaleValue = 0.5f; // Fattore di scala minima (relativo alla scala originale)
+    [SerializeField] private float _scaleValue = 0.5f; // Fattore minimo di scala (moltiplicato alla scala base)
 
     private Vector3 _baseScale; // Scala originale della piattaforma
 
     protected override void Start()
     {
-        _baseScale = transform.localScale; // Salva la scala di partenza
-        base.Start(); // Avvia la logica definita nella AbstractPlatform
+        _baseScale = transform.localScale; // Salva la scala iniziale
+        base.Start();                      // Chiama la logica di avvio comune
     }
 
-
-    //Riduce la scala verso il valore minimo con interpolazione smooth
-
+    /// <summary>
+    /// Scala la piattaforma verso una scala ridotta in modo smooth.
+    /// </summary>
     public override IEnumerator DoComportamentSmooth()
     {
         Vector3 start = transform.localScale;
@@ -34,7 +39,9 @@ public class ScalePlatform : AbstractPlatform
         transform.localScale = target;
     }
 
-    // Ripristina la scala originale con interpolazione smooth
+    /// <summary>
+    /// Riporta la piattaforma alla scala originale in modo smooth.
+    /// </summary>
     public override IEnumerator ResetComportamentSmooth()
     {
         Vector3 start = transform.localScale;
@@ -52,15 +59,14 @@ public class ScalePlatform : AbstractPlatform
         transform.localScale = target;
     }
 
-
-    // Scala continua sinusoidale tra la scala originale e quella minima
-
+    /// <summary>
+    /// Scala continua tramite oscillazione sinusoidale tra 1 e _scaleValue.
+    /// </summary>
     public override void ContinuousComportament()
     {
-        // Oscillazione tra 1 e _scaleValue con sinusoide normalizzata [0, 1]
+        // Normalizza il seno per ottenere valori tra 0 e 1
         float t = (Mathf.Sin((Time.time - _startTime) * _frequency) + 1f) * 0.5f;
         float scaleFactor = Mathf.Lerp(1f, _scaleValue, t);
-
         transform.localScale = _baseScale * scaleFactor;
     }
 }

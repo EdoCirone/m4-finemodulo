@@ -1,25 +1,27 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Piattaforma che ruota avanti e indietro lungo un asse specificato.
+/// Supporta sia il comportamento a step che continuo.
+/// </summary>
 public class RotationPlatform : AbstractPlatform
 {
     [Header("Proprietà Rotazione")]
-    [SerializeField] private float _rotationValue = 90f;           // Valore massimo di rotazione in gradi
-    [SerializeField] private Vector3 _rotationAxis = Vector3.right; // Asse di rotazione (es. X, Y o Z)
+    [SerializeField] private float _rotationValue = 90f;              // Angolo massimo di rotazione (gradi)
+    [SerializeField] private Vector3 _rotationAxis = Vector3.right;  // Asse di rotazione (X, Y o Z)
 
-    private Vector3 _baseRotation; // Rotazione iniziale della piattaforma
+    private Vector3 _baseRotation; // Rotazione iniziale della piattaforma (euler angles)
 
     protected override void Start()
     {
-        // Salva la rotazione iniziale in euleri
-        _baseRotation = transform.localEulerAngles;
-
-        // Chiama la logica della classe base (gestione offset, ciclo, ecc.)
-        base.Start();
+        _baseRotation = transform.localEulerAngles; // Salva l'orientamento di partenza
+        base.Start();                               // Avvia logica gestita dalla classe base
     }
 
-    // Ruota verso l'angolo massimo in modo smooth
-
+    /// <summary>
+    /// Ruota la piattaforma in modo smooth verso la rotazione massima.
+    /// </summary>
     public override IEnumerator DoComportamentSmooth()
     {
         Quaternion start = transform.rotation;
@@ -37,9 +39,9 @@ public class RotationPlatform : AbstractPlatform
         transform.rotation = target;
     }
 
-
-    // Riporta la rotazione allo stato iniziale in modo smooth
-
+    /// <summary>
+    /// Riporta la rotazione alla posizione originale in modo smooth.
+    /// </summary>
     public override IEnumerator ResetComportamentSmooth()
     {
         Quaternion start = transform.rotation;
@@ -57,9 +59,9 @@ public class RotationPlatform : AbstractPlatform
         transform.rotation = target;
     }
 
-
-    // Rotazione continua avanti-indietro basata su PingPong e asse definito
-
+    /// <summary>
+    /// Rotazione continua usando PingPong per oscillare tra base e rotazione massima.
+    /// </summary>
     public override void ContinuousComportament()
     {
         float pingPong = Mathf.PingPong((Time.time - _startTime) * _frequency, _rotationValue);
