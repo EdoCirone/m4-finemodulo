@@ -1,0 +1,62 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
+public class CollectableManager : MonoBehaviour
+{
+
+    [SerializeField] public int _totalCollectables { get; private set; }
+    public List<Collectable> _collectablesInScene { get; private set; }
+    public List<Collectable> _playerCollectables { get; private set; } = new List<Collectable>();
+
+    [SerializeField] private UnityEvent _onCollectedall;
+    [SerializeField] private UnityEvent _onCollected;
+
+
+
+
+
+    private void Start()
+    {
+        _collectablesInScene = new List<Collectable>(FindObjectsOfType<Collectable>());
+        _totalCollectables = _collectablesInScene.Count;
+        UIManager.Instance.UpdateCoins(CollectedCount, _totalCollectables);
+    }
+
+
+    /// <summary>
+    /// Aggiungo alla lista dei collezionabili del Player li levo dalla lista dei Collezionabili in scena
+    /// </summary>
+
+    public void TakeCollectable(Collectable collectable)
+    {
+        if (_collectablesInScene.Contains(collectable))
+        {
+            _collectablesInScene.Remove(collectable);
+            _playerCollectables.Add(collectable);
+            IsAllCollected();
+
+            _onCollected?.Invoke();
+            UIManager.Instance.UpdateCoins(CollectedCount, _totalCollectables); //Parlo all'interfaccia
+
+        }
+    }
+    /// <summary>
+    /// Controllo se ho preso tutti i collezionabili
+    /// </summary>
+
+    public void IsAllCollected()
+    {
+        if (_playerCollectables.Count == _totalCollectables)
+        {
+            Debug.Log("Ho collezzionato tutto quanto spero di invocare il menu");
+            _onCollectedall?.Invoke();
+        }
+
+    }
+
+
+    public int CollectedCount => _playerCollectables.Count;
+
+}

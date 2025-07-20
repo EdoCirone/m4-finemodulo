@@ -9,8 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5284870162131362416}
-  - component: {fileID: 5867856287299003949}
-  - component: {fileID: 2103903189893775135}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -33,42 +31,3 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5867856287299003949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5120018444086339957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f71d11ef4f941346ab6925543808a2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cameraPivot: {fileID: 0}
-  _cameraPitch: {fileID: 0}
-  _player: {fileID: 0}
-  _rotationSpeed: 3
-  _minPitch: -30
-  _maxPitch: 60
---- !u!114 &2103903189893775135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5120018444086339957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a7a1373f1465ef428c73eb07070a046, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pools:
-  - tag: BasicBullet
-    prefab: {fileID: 6108342435074331481, guid: 58180516f9b61b64fb08c73bdfa945fa,
-      type: 3}
-    size: 5
-  - tag: BoomBullet
-    prefab: {fileID: 9022027268977384255, guid: 843b0ae87a6b0ba4995af579d4d1f3b2,
-      type: 3}
-    size: 5

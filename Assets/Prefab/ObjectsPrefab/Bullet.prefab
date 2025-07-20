@@ -48,8 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e825e10cf85e44c9cdc0065229bdc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
-  _lifeTime: 10
+  _speed: 10
+  _lifeTime: 4
 --- !u!54 &7097786627901369889
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 1
+  _deactivateOnHit: 1
 --- !u!1 &6954406940544990281
 GameObject:
   m_ObjectHideFlags: 0
