@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,18 +15,30 @@ public class SceneLoader : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+
     }
 
     public void RestartLevel()
     {
         Time.timeScale = 1f;
+        StartCoroutine(ResetSceneCoroutine());
+    }
 
-        // Reset UI manualmente PRIMA del caricamento
-        if (UIManager.Instance != null)
-            UIManager.Instance.ResetUI();
+    private IEnumerator ResetSceneCoroutine()
+    {
+        Scene current = SceneManager.GetActiveScene();
+        yield return SceneManager.LoadSceneAsync(current.buildIndex);
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // Aspetta un frame per essere sicuro che tutto sia stato instanziato
+        yield return null;
+
+        UIManager.Instance?.RebindUI();
+        UIManager.Instance?.ResetUI();
+
+        // Reimposta player nella camera
+        GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
+        if (playerGO != null)
+            FindObjectOfType<CameraManager>()?.SetPlayer(playerGO.transform);
     }
 
     public void LoadMainMenu()

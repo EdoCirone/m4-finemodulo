@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraManager : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class CameraManager : MonoBehaviour
         FollowPlayer();
     }
 
+    public void SetPlayer(Transform newPlayer)
+    {
+        _player = newPlayer;
+    }
     private void ReadInput()
     {
         _mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
@@ -41,11 +46,15 @@ public class CameraManager : MonoBehaviour
         _cameraPitch.localEulerAngles = new Vector3(_currentPitch, 0f, 0f);
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
+        if (playerGO != null)
+            SetPlayer(playerGO.transform);
+    }
     private void FollowPlayer()
     {
-        if (_player.position == null) return;
+        if (_player == null) return;
         _cameraPivot.position = _player.position;
-
-
     }
 }

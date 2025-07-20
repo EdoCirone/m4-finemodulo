@@ -21,13 +21,19 @@ public class UIManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // per farlo restare tra le scene
+        
     }
     public void ResetUI()
     {
         _coinPanel.UpdateCoinGraphics(0, 0);
         _lifePanel.UpdateLifeDisplay(0, 0);
         _timerPanel.UpdateTimerUI(0);
+    }
+    public void RebindUI()
+    {
+        _coinPanel = FindObjectOfType<UI_CoinPanel>();
+        _lifePanel = FindObjectOfType<UI_LifePanel>();
+        _timerPanel = FindObjectOfType<UI_Timer>();
     }
     public void RefreshLifeFromPlayer(LifeController source)
     {

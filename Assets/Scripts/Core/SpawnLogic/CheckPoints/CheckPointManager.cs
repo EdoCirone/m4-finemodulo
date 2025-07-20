@@ -15,7 +15,6 @@ public class CheckpointManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     public void SetCheckpoint(Transform checkpoint)

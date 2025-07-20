@@ -32,8 +32,8 @@ public class Checkpoint : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.white;
-        Gizmos.DrawSphere(transform.position, 1f);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, 1f);
     }
 }
 
