@@ -108,6 +108,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2049315218967483388, guid: 70edd6b675a9eaf429975b771b126e65,
+        type: 3}
+      propertyPath: m_text
+      value: return
+      objectReference: {fileID: 0}
+    - target: {fileID: 2049315218967483388, guid: 70edd6b675a9eaf429975b771b126e65,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 26.85
+      objectReference: {fileID: 0}
     - target: {fileID: 2723038840053239916, guid: 70edd6b675a9eaf429975b771b126e65,
         type: 3}
       propertyPath: m_Name
@@ -127,7 +137,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 8057041988626818283, guid: 7b4092b9125d1ab4ebae0f9301c79a5d,
+      objectReference: {fileID: 6408465558950566979, guid: 7b758f2b9f6222c4badcf2d2610cda7a,
         type: 3}
     - target: {fileID: 2907332634020138919, guid: 70edd6b675a9eaf429975b771b126e65,
         type: 3}
@@ -137,12 +147,12 @@ PrefabInstance:
     - target: {fileID: 2907332634020138919, guid: 70edd6b675a9eaf429975b771b126e65,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadNextLevel
+      value: HidePauseMenu
       objectReference: {fileID: 0}
     - target: {fileID: 2907332634020138919, guid: 70edd6b675a9eaf429975b771b126e65,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SceneLoader, Assembly-CSharp
+      value: MenuManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2907332634020138919, guid: 70edd6b675a9eaf429975b771b126e65,
         type: 3}

@@ -26,7 +26,7 @@ public class CameraManager : MonoBehaviour
     private void ReadInput()
     {
         _mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-        _cameraMovementRequested = Input.GetMouseButton(0); 
+        _cameraMovementRequested = Input.GetMouseButton(0);
     }
 
     private void CameraRotation()
@@ -43,6 +43,9 @@ public class CameraManager : MonoBehaviour
 
     private void FollowPlayer()
     {
+        if (_player.position == null) return;
         _cameraPivot.position = _player.position;
+
+
     }
 }

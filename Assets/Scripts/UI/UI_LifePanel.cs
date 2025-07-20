@@ -14,30 +14,41 @@ public class UI_LifePanel : MonoBehaviour
 
     public void UpdateLifeDisplay(int currentHp, int maxHp)
     {
-        // Se il numero di cuori è diverso da quello richiesto, ricreali
         if (_hearts.Count != maxHp)
         {
             ResetHearts();
+
+            // Ricreazione dei cuori
             for (int i = 0; i < maxHp; i++)
             {
                 GameObject heart = Instantiate(_heartPrefab, _heartContainer);
                 Image img = heart.GetComponent<Image>();
-                _hearts.Add(img);
+
+                if (img != null)
+                {
+                    img.color = i < currentHp ? _fullColor : _emptyColor;
+                    _hearts.Add(img);
+                }
             }
         }
-
-        // Aggiorna il colore in base alla vita corrente
-        for (int i = 0; i < _hearts.Count; i++)
+        else
         {
-            _hearts[i].color = i < currentHp ? _fullColor : _emptyColor;
+            // Se la lista è valida e già della giusta dimensione, aggiorna i colori
+            for (int i = 0; i < _hearts.Count; i++)
+            {
+                if (_hearts[i] != null)
+                    _hearts[i].color = i < currentHp ? _fullColor : _emptyColor;
+            }
         }
     }
+
 
     private void ResetHearts()
     {
         foreach (var heart in _hearts)
         {
-            Destroy(heart.gameObject);
+            if (heart != null)
+                Destroy(heart.gameObject);
         }
         _hearts.Clear();
     }

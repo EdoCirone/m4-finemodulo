@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7513897197721340838}
-  - component: {fileID: 210149597040407923}
   - component: {fileID: 3215105949278802205}
   - component: {fileID: 4643553427910336813}
+  - component: {fileID: 210149597040407923}
   - component: {fileID: 3865089765945584753}
+  - component: {fileID: 2585063737031485892}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -36,27 +37,6 @@ Transform:
   - {fileID: 7469020131609915948}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &210149597040407923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 539360416816311778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8b61ed1921e742448fddef2da74a474, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _movementType: 0
-  _moveSpeed: 4
-  _rotationSpeed: 10
-  _jumpForce: 5
-  _maxJumpCount: 2
-  _groundCheckDistance: 1.1
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!54 &3215105949278802205
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -107,6 +87,27 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &210149597040407923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 539360416816311778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b61ed1921e742448fddef2da74a474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movementType: 0
+  _moveSpeed: 4
+  _rotationSpeed: 10
+  _jumpForce: 5
+  _maxJumpCount: 2
+  _groundCheckDistance: 1.1
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &3865089765945584753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,7 +125,23 @@ MonoBehaviour:
   _onDeath:
     m_PersistentCalls:
       m_Calls: []
+  _onHit:
+    m_PersistentCalls:
+      m_Calls: []
   _deathHeight: -10
+--- !u!114 &2585063737031485892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 539360416816311778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f3cff32d8e458542826b965c9c3a050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _customStartPoint: {fileID: 0}
 --- !u!1 &2894194961218422810
 GameObject:
   m_ObjectHideFlags: 0

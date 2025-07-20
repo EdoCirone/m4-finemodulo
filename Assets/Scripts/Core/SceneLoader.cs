@@ -20,6 +20,11 @@ public class SceneLoader : MonoBehaviour
     public void RestartLevel()
     {
         Time.timeScale = 1f;
+
+        // Reset UI manualmente PRIMA del caricamento
+        if (UIManager.Instance != null)
+            UIManager.Instance.ResetUI();
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
