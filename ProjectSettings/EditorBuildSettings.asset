@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: "Assets/Scenes/MenuScenes/MainMen\xF9.unity"
+    path: Assets/Scenes/MenuScenes/MainMenu.unity
     guid: 6384eeaf8068a03489564fc602922f51
   - enabled: 1
-    path: Assets/Scenes/LVLScenes/MainScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/LVLScenes/LVL_01.unity
+    guid: a170f6eca7f40d04f978a9819df3481a
+  - enabled: 1
+    path: Assets/Scenes/LVLScenes/LVL_02.unity
+    guid: 7ba62c7ec4ef46a428af6e1cbca459ab
   m_configObjects: {}
