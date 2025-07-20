@@ -44,7 +44,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadMainMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu"); 
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void LoadNextLevel()
@@ -55,5 +55,25 @@ public class SceneLoader : MonoBehaviour
             SceneManager.LoadScene(nextIndex);
         else
             LoadMainMenu();
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Ho chiuso il gioco.");  // Debug per l’editor
+        Application.Quit();                // Funziona in build
+    }
+
+    public void LoadLevelByIndex(int index)
+    {
+        Time.timeScale = 1f;
+
+        if (index >= 0 && index < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(index);
+        }
+        else
+        {
+            Debug.LogWarning($"Indice scena {index} non valido!");
+        }
     }
 }
