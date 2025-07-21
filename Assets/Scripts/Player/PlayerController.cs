@@ -32,13 +32,13 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         ReadInput(); // Legge input ogni frame
-        Jump();     // Gestione salto
+
     }
 
     private void FixedUpdate()
     {
         Movement(); // Movimento in base alla modalità selezionata
-
+        Jump();     // Gestione salto
     }
 
     /// <summary>
@@ -46,8 +46,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void ReadInput()
     {
-        _moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")); //Questo l'ha suggerito copilot, mi son fidato perchè sembra elegante!
-        _jumpRequested = Input.GetButtonDown("Jump");
+        _moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        // Richiede il salto solo se c'è ancora almeno un salto disponibile
+        if (Input.GetButtonDown("Jump") && (_currentJumpCount < _maxJumpCount))
+        {
+            if (_currentJumpCount == 0 || !_jumpRequested) // Limita le richieste multiple in volo
+                _jumpRequested = true;
+        }
     }
 
     /// <summary>
@@ -102,24 +108,21 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        // Se a terra e cadendo lentamente, azzera il conteggio dei salti
         if (IsGrounded() && _rb.velocity.y <= 0.1f)
         {
             _currentJumpCount = 0;
         }
 
-        // Se premuto "Jump" e ho ancora salti disponibili
         if (_jumpRequested && _currentJumpCount < _maxJumpCount)
         {
             _currentJumpCount++;
 
-            // Reset componente verticale per evitare accumuli
-            Vector3 velocity = _rb.velocity;
-            velocity.y = 0;
-            _rb.velocity = velocity;
-
+            _rb.velocity = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z);
             _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+
+            _jumpRequested = false;
         }
+
     }
 
     /// <summary>
@@ -127,7 +130,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private bool IsGrounded()
     {
-        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        Vector3 origin = transform.position + Vector3.up * 0.2f;
         return Physics.Raycast(origin, Vector3.down, _groundCheckDistance, _groundLayer);
     }
 

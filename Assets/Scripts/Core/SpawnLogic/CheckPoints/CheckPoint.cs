@@ -26,6 +26,9 @@ public class Checkpoint : MonoBehaviour
             CheckpointManager.Instance.SetCheckpoint(transform);
 
             if (_respawnVisual != null)
+            {
+                Debug.Log($"Sto spawnando la grafica{_respawnVisual}");
+            }
                 _respawnVisual.SetActive(true); // visual feedback
         }
     }
