@@ -32,16 +32,17 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         ReadInput(); // Legge input ogni frame
+        Jump();     // Gestione salto
     }
 
     private void FixedUpdate()
     {
         Movement(); // Movimento in base alla modalità selezionata
-        Jump();     // Gestione salto
+
     }
 
     /// <summary>
-    /// Legge gli input da tastiera/controller.
+    /// Legge gli input da tastiera
     /// </summary>
     private void ReadInput()
     {
