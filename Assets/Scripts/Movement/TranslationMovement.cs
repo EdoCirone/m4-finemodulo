@@ -1,15 +1,18 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
 /// <summary>
 /// Gestisce oggetti che traslano lungo un asse, sia con movimento continuo che a step.
-/// Espone DeltaPosition per l’attaccamento preciso del player.
+/// Espone DeltaPosition per lâ€™attaccamento preciso del player.
 /// </summary>
 public class TranslationMovement : AbstractObjectMovement
 {
-    [Header("Proprietà Movimento")]
+    [Header("ProprietÃ  Movimento")]
     [SerializeField] private float _movementValue = 3f;
     [SerializeField] private Vector3 _movementAxis = Vector3.right;
+
+    [Header("Attaccamento Player")]
+    public bool EnableAttachment = true;
 
     private Vector3 _basePosition;
     private Vector3 _lastPosition;
@@ -43,7 +46,7 @@ public class TranslationMovement : AbstractObjectMovement
         }
 
         transform.position = target;
-        DeltaPosition = transform.position - _lastPosition;
+        DeltaPosition = Vector3.zero;
         _lastPosition = transform.position;
     }
 
@@ -64,9 +67,9 @@ public class TranslationMovement : AbstractObjectMovement
 
             yield return null;
         }
-        
+
         transform.position = target;
-        DeltaPosition = transform.position - _lastPosition;
+        DeltaPosition = Vector3.zero;
         _lastPosition = transform.position;
     }
 

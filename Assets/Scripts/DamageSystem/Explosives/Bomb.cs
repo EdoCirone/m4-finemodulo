@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Componente che gestisce una bomba: si attiva se un player entra nel raggio,
@@ -20,7 +20,7 @@ public class Bomb : MonoBehaviour
     [Header("LayerMask")]
     [SerializeField] private LayerMask _playerLayer;
 
-    private Collider[] _players = new Collider[4];
+    private Collider[] _players = new Collider[8];
     private int _playerCount = 0;
 
     private bool _isActivated = false;
@@ -64,6 +64,9 @@ public class Bomb : MonoBehaviour
     /// </summary>
     private void Explode()
     {
+        // Aggiorna i player attualmente dentro al raggio
+        _playerCount = Physics.OverlapSphereNonAlloc(transform.position, _activationRadius, _players, _playerLayer);
+
         MakeDamage dmg = GetComponent<MakeDamage>();
 
         for (int i = 0; i < _playerCount; i++)

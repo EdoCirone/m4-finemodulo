@@ -1,8 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Attacca il player solo a piattaforme che si muovono (TranslationMovement).
-/// </summary>
 public class PlatformAttachmentHandler : MonoBehaviour
 {
     private TranslationMovement _currentPlatform;
@@ -18,29 +15,26 @@ public class PlatformAttachmentHandler : MonoBehaviour
     {
         if (_currentPlatform != null)
         {
+            // Se la piattaforma è disattivata o ha perso il flag, smetti di attaccarti
+            if (!_currentPlatform.EnableAttachment)
+            {
+                Debug.Log("PlatformAttachmentHandler: Piattaforma non più attaccabile.");
+                _currentPlatform = null;
+                return;
+            }
+
             Vector3 delta = _currentPlatform.DeltaPosition;
-            Debug.Log("PlatformAttachmentHandler: DeltaPlatform = " + delta);
             _rb.MovePosition(_rb.position + delta);
-        }
-        else
-        {
-            Debug.Log("PlatformAttachmentHandler: Nessuna piattaforma attiva.");
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("PlatformAttachmentHandler: Collisione con: " + collision.collider.name);
-
         var platform = collision.collider.GetComponentInParent<TranslationMovement>();
-        if (platform != null)
+        if (platform != null && platform.EnableAttachment)
         {
-            Debug.Log("PlatformAttachmentHandler: È una piattaforma valida! Nome: " + platform.name);
+            Debug.Log("PlatformAttachmentHandler: Trovata piattaforma valida: " + platform.name);
             _currentPlatform = platform;
-        }
-        else
-        {
-            Debug.Log("PlatformAttachmentHandler: Non è una piattaforma. Collider: " + collision.collider.name);
         }
     }
 
