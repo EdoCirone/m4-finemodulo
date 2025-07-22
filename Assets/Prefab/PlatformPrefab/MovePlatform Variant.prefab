@@ -95,9 +95,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bae8e0fabde29448b67c490864aa44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _timeOffset: 0
   _comportamentTime: 1
   _waitTime: 0.5
-  _continuosMoviment: 0
+  _continuousMovement: 0
   _frequency: 1
   _movementValue: 2
   _movementAxis: {x: 1, y: 0, z: 0}

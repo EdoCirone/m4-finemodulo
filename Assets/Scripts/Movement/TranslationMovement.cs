@@ -2,26 +2,28 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Gestisce tutti gli oggetti che traslano lungo un asse specificato.
-/// Supporta sia movimento a step che continuo.
+/// Gestisce oggetti che traslano lungo un asse, sia con movimento continuo che a step.
+/// Espone DeltaPosition per l’attaccamento preciso del player.
 /// </summary>
 public class TranslationMovement : AbstractObjectMovement
 {
     [Header("Proprietà Movimento")]
-    [SerializeField] private float _movementValue = 3f;               // Ampiezza massima del movimento
-    [SerializeField] private Vector3 _movementAxis = Vector3.right;  // Asse lungo cui muoversi
+    [SerializeField] private float _movementValue = 3f;
+    [SerializeField] private Vector3 _movementAxis = Vector3.right;
 
-    private Vector3 _basePosition; // Posizione iniziale dell'oggetto (salvata al runtime)
+    private Vector3 _basePosition;
+    private Vector3 _lastPosition;
+    public Vector3 DeltaPosition { get; private set; }
 
     protected override void Start()
     {
-        _basePosition = transform.position; // Salviamo la posizione solo in runtime
+        _basePosition = transform.position;
+        _lastPosition = _basePosition;
+        DeltaPosition = Vector3.zero;
+
         base.Start();
     }
 
-    /// <summary>
-    /// Movimento smooth verso la posizione finale (animazione di andata).
-    /// </summary>
     public override IEnumerator DoComportamentSmooth()
     {
         Vector3 start = transform.position;
@@ -32,16 +34,19 @@ public class TranslationMovement : AbstractObjectMovement
         {
             timer += Time.deltaTime;
             float t = timer / _comportamentTime;
-            transform.position = Vector3.Lerp(start, target, t);
+
+            Vector3 newPos = Vector3.Lerp(start, target, t);
+            DeltaPosition = newPos - transform.position;
+            transform.position = newPos;
+
             yield return null;
         }
 
         transform.position = target;
+        DeltaPosition = transform.position - _lastPosition;
+        _lastPosition = transform.position;
     }
 
-    /// <summary>
-    /// Movimento smooth verso la posizione iniziale (animazione di ritorno).
-    /// </summary>
     public override IEnumerator ResetComportamentSmooth()
     {
         Vector3 start = transform.position;
@@ -52,31 +57,33 @@ public class TranslationMovement : AbstractObjectMovement
         {
             timer += Time.deltaTime;
             float t = timer / _comportamentTime;
-            transform.position = Vector3.Lerp(start, target, t);
+
+            Vector3 newPos = Vector3.Lerp(start, target, t);
+            DeltaPosition = newPos - transform.position;
+            transform.position = newPos;
+
             yield return null;
         }
-
+        
         transform.position = target;
+        DeltaPosition = transform.position - _lastPosition;
+        _lastPosition = transform.position;
     }
 
-    /// <summary>
-    /// Movimento continuo avanti e indietro (PingPong) lungo l’asse specificato.
-    /// </summary>
     public override void ContinuousComportament()
     {
-        // Calcolo il valore PingPong in base al tempo, sincronizzato con lo start
         float pingPong = Mathf.PingPong((Time.time - _startTime) * _frequency, _movementValue);
-        transform.position = _basePosition + _movementAxis * pingPong;
+        Vector3 newPos = _basePosition + _movementAxis * pingPong;
+
+        DeltaPosition = newPos - transform.position;
+        transform.position = newPos;
+
+        _lastPosition = transform.position;
     }
 
-    /// <summary>
-    /// Disegna un gizmo che mostra la posizione massima raggiunta dalla piattaforma.
-    /// </summary>
     private void OnDrawGizmos()
     {
-        // In PlayMode usiamo la base registrata, altrimenti prendiamo la posizione attuale
         Vector3 basePos = Application.isPlaying ? _basePosition : transform.position;
-
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(basePos + _movementAxis * _movementValue, 0.1f);
     }
