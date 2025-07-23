@@ -138,7 +138,7 @@ MonoBehaviour:
   _frequency: 90
   _rotationValue: 90
   _rotationAxis: {x: 0, y: 1, z: 0}
-  _typeofcont: 1
+  _rotationType: 1
   _rotationSpeed: 90
 --- !u!65 &6507464539682953670
 BoxCollider:
@@ -201,4 +201,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 1
-  _deactivateOnHit: 1
+  _deactivateOnHit: 0

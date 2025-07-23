@@ -133,11 +133,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _timeOffset: 0
   _comportamentTime: 0.1
-  _waitTime: 1
+  _waitTime: 3
   _continuousMovement: 0
   _frequency: 1
-  _movementValue: 2
+  _movementValue: 1.5
   _movementAxis: {x: 0, y: 1, z: 0}
+  EnableAttachment: 0
 --- !u!114 &2891545738625186814
 MonoBehaviour:
   m_ObjectHideFlags: 0

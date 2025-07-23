@@ -9,9 +9,6 @@ public class Bomb : MonoBehaviour
     [Header("Raggio di attivazione ed esplosione")]
     [SerializeField] private float _activationRadius = 3f;
 
-    [Header("Forza e danni dell'esplosione")]
-    [SerializeField] private float _explosionForce = 3f;
-
     [Header("CountDown e sistema d'allarme")]
     [SerializeField] private float _explosionCountdown = 3f;
     [SerializeField] private float _allarmScaleTime = 5f;
@@ -60,11 +57,10 @@ public class Bomb : MonoBehaviour
     }
 
     /// <summary>
-    /// Esegue l'esplosione: danno + forza ai player nel raggio.
+    /// Esegue l'esplosione: applica danno ai player nel raggio.
     /// </summary>
     private void Explode()
     {
-        // Aggiorna i player attualmente dentro al raggio
         _playerCount = Physics.OverlapSphereNonAlloc(transform.position, _activationRadius, _players, _playerLayer);
 
         MakeDamage dmg = GetComponent<MakeDamage>();
@@ -74,15 +70,7 @@ public class Bomb : MonoBehaviour
             GameObject player = _players[i].gameObject;
             Debug.Log("Player colpito: " + player.name);
 
-            // Spinta fisica
-            Rigidbody rb = player.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                Vector3 dir = (player.transform.position - transform.position).normalized * _explosionForce;
-                rb.AddForce(dir, ForceMode.Impulse);
-            }
-
-            // Danno (via MakeDamage, se presente)
+            // Solo danno, nessuna forza o spinta
             if (dmg != null)
                 dmg.ApplyDamage(player);
         }

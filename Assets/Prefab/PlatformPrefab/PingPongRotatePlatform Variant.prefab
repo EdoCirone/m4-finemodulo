@@ -21,7 +21,7 @@ PrefabInstance:
     - target: {fileID: 3184657743046982596, guid: 12caabf8715ca8e4b851675a7b698c45,
         type: 3}
       propertyPath: _frequency
-      value: 20
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3184657743046982596, guid: 12caabf8715ca8e4b851675a7b698c45,
         type: 3}

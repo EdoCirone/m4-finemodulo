@@ -521,6 +521,52 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 72
       objectReference: {fileID: 0}
+    - target: {fileID: 8591962046305820011, guid: af3fe34da2ad9ff48a595dc441b130da,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591962046305820011, guid: af3fe34da2ad9ff48a595dc441b130da,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591962046305820011, guid: af3fe34da2ad9ff48a595dc441b130da,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591962046305820011, guid: af3fe34da2ad9ff48a595dc441b130da,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844277832706640196, guid: af3fe34da2ad9ff48a595dc441b130da,
+        type: 3}
+      propertyPath: m_Type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844277832706640196, guid: af3fe34da2ad9ff48a595dc441b130da,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 53bba471314d2f54f9cc82b6a1a15a59,
+        type: 3}
+    - target: {fileID: 8844277832706640196, guid: af3fe34da2ad9ff48a595dc441b130da,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844277832706640196, guid: af3fe34da2ad9ff48a595dc441b130da,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844277832706640196, guid: af3fe34da2ad9ff48a595dc441b130da,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3112497274110525311, guid: af3fe34da2ad9ff48a595dc441b130da, type: 3}

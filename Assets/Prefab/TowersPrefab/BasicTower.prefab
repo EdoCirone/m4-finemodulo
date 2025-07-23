@@ -156,7 +156,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _bulletTag: basic
-  _coolDown: 1
+  _coolDown: 3
 --- !u!1 &4644178198548204057
 GameObject:
   m_ObjectHideFlags: 0

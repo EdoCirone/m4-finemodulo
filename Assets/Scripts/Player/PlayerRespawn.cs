@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerRespawn : MonoBehaviour, IRespawnable
 {
+    [SerializeField] private Transform _customStartPoint;
+
     private Transform _startPosition;
     private Transform _spawnPoint;
-
-    [SerializeField] private Transform _customStartPoint; //questa è una cazzatina per mettere un override nel caso volessi mettere uno startpoint
 
     private void Start()
     {
         _startPosition = _customStartPoint != null ? _customStartPoint : transform;
     }
+
     public void SetSpawnPoint(Transform point)
     {
         _spawnPoint = point;
@@ -20,13 +19,15 @@ public class PlayerRespawn : MonoBehaviour, IRespawnable
 
     public void RespawnHere(Transform _)
     {
-        if (_spawnPoint != null)
+        Vector3 targetPos = _spawnPoint != null ? _spawnPoint.position : _startPosition.position;
+        transform.position = targetPos;
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            transform.position = _spawnPoint.position;
-        }
-        else
-        {
-            transform.position = _startPosition.position;
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.Sleep();// forza il reset completo del rigidbody
         }
     }
 }

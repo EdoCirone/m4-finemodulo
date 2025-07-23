@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    // Tipo di movimento selezionabile
     private enum MovementType { Normal, Tank }
 
     [Header("Movimento")]
@@ -11,14 +11,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _rotationSpeed = 5f;
 
     [Header("Salto")]
-    [SerializeField] private float _jumpForce = 5f;
+    [SerializeField] private float _jumpHeight = 5f;
     [SerializeField] private int _maxJumpCount = 2;
 
     [Header("Ground Checker")]
-    [SerializeField] private float _groundCheckDistance = 1.1f;
+    [SerializeField] private float _groundCheckRadius = 0.3f;
     [SerializeField] private LayerMask _groundLayer;
 
-    // Input & stato
     private Rigidbody _rb;
     private Vector2 _moveInput;
     private bool _jumpRequested;
@@ -31,59 +30,46 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        ReadInput(); // Legge input ogni frame
-
+        ReadInput();
     }
 
     private void FixedUpdate()
     {
-        Movement(); // Movimento in base alla modalità selezionata
-        Jump();     // Gestione salto
+        HandleJump();
+        HandleMovement();
     }
 
-    /// <summary>
-    /// Legge gli input da tastiera
-    /// </summary>
     private void ReadInput()
     {
         _moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        // Richiede il salto solo se c'è ancora almeno un salto disponibile
-        if (Input.GetButtonDown("Jump") && (_currentJumpCount < _maxJumpCount))
+        if (Input.GetButtonDown("Jump"))
         {
-            if (_currentJumpCount == 0 || !_jumpRequested) // Limita le richieste multiple in volo
-                _jumpRequested = true;
+            _jumpRequested = true;
         }
     }
 
-    /// <summary>
-    /// Seleziona il tipo di movimento (normale o tank).
-    /// </summary>
-    private void Movement()
+    private void HandleMovement()
     {
         switch (_movementType)
         {
             case MovementType.Normal:
-                NormalMovement();
+                MoveNormal();
                 break;
-
             case MovementType.Tank:
-                TankMovement();
+                MoveTank();
                 break;
         }
     }
 
-    /// <summary>
-    /// Movimento "free" in tutte le direzioni con rotazione verso la direzione.
-    /// </summary>
-    private void NormalMovement()
+    private void MoveNormal()
     {
-        Vector3 direction = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
+        Vector3 direction = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized;
 
         if (direction.sqrMagnitude > 0.01f)
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg; // Il Rad2Deg trasforma i radianti in gradi, sono impazzito dietro sta roba...
-            Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
+            float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+            Quaternion targetRotation = Quaternion.Euler(0f, angle, 0f);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.fixedDeltaTime);
 
             Vector3 movement = direction * _moveSpeed * Time.fixedDeltaTime;
@@ -91,10 +77,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Movimento tipo tank: avanti/indietro + rotazione orizzontale.
-    /// </summary>
-    private void TankMovement()
+    private void MoveTank()
     {
         float moveAmount = _moveInput.y * _moveSpeed * Time.fixedDeltaTime;
         float rotationAmount = _moveInput.x * _rotationSpeed * 10f * Time.fixedDeltaTime;
@@ -103,11 +86,9 @@ public class PlayerController : MonoBehaviour
         _rb.MoveRotation(_rb.rotation * Quaternion.Euler(0f, rotationAmount, 0f));
     }
 
-    /// <summary>
-    /// Gestione del salto.
-    /// </summary>
-    private void Jump()
+    private void HandleJump()
     {
+        // Reset salti se a terra
         if (IsGrounded() && _rb.velocity.y <= 0.1f)
         {
             _currentJumpCount = 0;
@@ -116,31 +97,31 @@ public class PlayerController : MonoBehaviour
         if (_jumpRequested && _currentJumpCount < _maxJumpCount)
         {
             _currentJumpCount++;
-
-            _rb.velocity = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z);
-            _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
-
             _jumpRequested = false;
+
+            Vector3 velocity = _rb.velocity;
+            velocity.y = 0f;
+            _rb.velocity = velocity;
+
+            float jumpVelocity = Mathf.Sqrt(2f * _jumpHeight * -Physics.gravity.y);
+            _rb.AddForce(Vector3.up * jumpVelocity, ForceMode.VelocityChange);
         }
 
+        // Se non posso saltare, mantengo la richiesta (non azzero)
     }
 
-    /// <summary>
-    /// Controlla se il personaggio è a terra usando un raycast.
-    /// </summary>
     private bool IsGrounded()
     {
-        Vector3 origin = transform.position + Vector3.up * 0.2f;
-        return Physics.Raycast(origin, Vector3.down, _groundCheckDistance, _groundLayer);
+        // Centro sfera leggermente sotto il personaggio
+        Vector3 origin = transform.position + Vector3.down * 0.1f;
+        return Physics.CheckSphere(origin, _groundCheckRadius, _groundLayer);
     }
 
-    /// <summary>
-    /// Visualizza il raycast per il controllo del terreno nell'editor.
-    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Vector3 origin = transform.position + Vector3.up * 0.1f;
-        Gizmos.DrawLine(origin, origin + Vector3.down * _groundCheckDistance);
+        Vector3 origin = transform.position + Vector3.down * 0.1f;
+        Gizmos.DrawWireSphere(origin, _groundCheckRadius);
     }
+
 }

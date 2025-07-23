@@ -97,3 +97,4 @@ MonoBehaviour:
   _frequency: 1
   _movementValue: 3
   _movementAxis: {x: 1, y: 0, z: 0}
+  EnableAttachment: 0
