@@ -2,7 +2,7 @@
 - Project name: m4-finemodulo
 - Unity version: Unity 2022.3.61f1
 - Active game object:
-  - Name: SceneManager
+  - Name: BackGround (panel)
   - Tag: Untagged
-  - Layer: Default
+  - Layer: UI
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
