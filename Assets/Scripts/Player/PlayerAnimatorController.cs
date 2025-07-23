@@ -16,9 +16,14 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void Awake()
     {
-        _anim = GetComponentInChildren<Animator>();
+        _anim = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
         _playerController = GetComponent<PlayerController>();
+
+        foreach (AnimatorControllerParameter param in _anim.parameters)
+        {
+            Debug.Log("Animator param: " + param.name);
+        }
     }
 
     public void OnJump()
