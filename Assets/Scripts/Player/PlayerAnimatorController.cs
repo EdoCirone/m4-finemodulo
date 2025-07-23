@@ -20,10 +20,6 @@ public class PlayerAnimatorController : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _playerController = GetComponent<PlayerController>();
 
-        foreach (AnimatorControllerParameter param in _anim.parameters)
-        {
-            Debug.Log("Animator param: " + param.name);
-        }
     }
 
     public void OnJump()

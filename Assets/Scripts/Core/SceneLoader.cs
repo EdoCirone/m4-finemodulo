@@ -47,6 +47,12 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    public void LoadCreditsMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Credits");
+    }
+
     public void LoadNextLevel()
     {
         Time.timeScale = 1f;
