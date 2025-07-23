@@ -2,7 +2,7 @@
 - Project name: m4-finemodulo
 - Unity version: Unity 2022.3.61f1
 - Active game object:
-  - Name: RotateDamageTrap
-  - Tag: Untagged
-  - Layer: Traps
+  - Name: Player
+  - Tag: Player
+  - Layer: Player
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

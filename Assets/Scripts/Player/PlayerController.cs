@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
@@ -18,9 +19,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _groundCheckRadius = 0.3f;
     [SerializeField] private LayerMask _groundLayer;
 
+    [SerializeField] private UnityEvent _onJump;
+    [SerializeField] private UnityEvent _onLand;
+
     private Rigidbody _rb;
     private Vector2 _moveInput;
     private bool _jumpRequested;
+    private bool _wasGroundedLastFrame = false;
     private int _currentJumpCount;
 
     private void Awake()
@@ -37,6 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         HandleJump();
         HandleMovement();
+        CheckLanding();
     }
 
     private void ReadInput()
@@ -105,9 +111,23 @@ public class PlayerController : MonoBehaviour
 
             float jumpVelocity = Mathf.Sqrt(2f * _jumpHeight * -Physics.gravity.y);
             _rb.AddForce(Vector3.up * jumpVelocity, ForceMode.VelocityChange);
+
+            _onJump?.Invoke();
         }
 
         // Se non posso saltare, mantengo la richiesta (non azzero)
+    }
+
+    private void CheckLanding()
+    {
+        bool isGroundedNow = IsGrounded();
+
+        if (!_wasGroundedLastFrame && isGroundedNow && _rb.velocity.y <= 0.1f)
+        {
+            _onLand?.Invoke(); // chiama l'animazione, particelle, suoni ecc.
+        }
+
+        _wasGroundedLastFrame = isGroundedNow;
     }
 
     private bool IsGrounded()
@@ -116,6 +136,10 @@ public class PlayerController : MonoBehaviour
         Vector3 origin = transform.position + Vector3.down * 0.1f;
         return Physics.CheckSphere(origin, _groundCheckRadius, _groundLayer);
     }
+
+    public bool IsGroundedNow => IsGrounded();
+
+    public Vector2 MoveInput => _moveInput;
 
     private void OnDrawGizmosSelected()
     {
