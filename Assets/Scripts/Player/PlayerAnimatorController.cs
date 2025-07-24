@@ -23,7 +23,14 @@ public class PlayerAnimatorController : MonoBehaviour
         _playerController = GetComponent<PlayerController>();
 
     }
+    private void Update()
+    {
+        float v = _playerController.MoveInput.y;
 
+        _anim.SetFloat(_paramNameForward, v * _paramRangeForward);
+        _anim.SetFloat(_paramNameVerticalSpeed, _rb.velocity.y);
+        _anim.SetBool(_paramNameIsGrounded, _playerController.IsGroundedNow);
+    }
     public void OnJump()
     {
         _anim.SetTrigger(_paramNameJump);
@@ -46,14 +53,7 @@ public class PlayerAnimatorController : MonoBehaviour
         _anim.SetTrigger(_paramNameFallDeath);
     }
 
-    private void Update()
-    {
-        float v = _playerController.MoveInput.y;
 
-        _anim.SetFloat(_paramNameForward, v * _paramRangeForward);
-        _anim.SetFloat(_paramNameVerticalSpeed, _rb.velocity.y);
-        _anim.SetBool(_paramNameIsGrounded, _playerController.IsGroundedNow);
-    }
 
 
 
