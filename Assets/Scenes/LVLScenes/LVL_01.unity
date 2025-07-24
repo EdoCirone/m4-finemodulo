@@ -1237,49 +1237,9 @@ PrefabInstance:
       objectReference: {fileID: 2037958408}
     - target: {fileID: 3865089765945584753, guid: 57d3c990815ad1b4387cbb621ce378c9,
         type: 3}
-      propertyPath: _onHit.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3865089765945584753, guid: 57d3c990815ad1b4387cbb621ce378c9,
-        type: 3}
-      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3865089765945584753, guid: 57d3c990815ad1b4387cbb621ce378c9,
-        type: 3}
-      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3865089765945584753, guid: 57d3c990815ad1b4387cbb621ce378c9,
-        type: 3}
       propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 932622811}
-    - target: {fileID: 3865089765945584753, guid: 57d3c990815ad1b4387cbb621ce378c9,
-        type: 3}
-      propertyPath: _onHit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3865089765945584753, guid: 57d3c990815ad1b4387cbb621ce378c9,
-        type: 3}
-      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3865089765945584753, guid: 57d3c990815ad1b4387cbb621ce378c9,
-        type: 3}
-      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowGameOverMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 3865089765945584753, guid: 57d3c990815ad1b4387cbb621ce378c9,
-        type: 3}
-      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MenuManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3865089765945584753, guid: 57d3c990815ad1b4387cbb621ce378c9,
-        type: 3}
-      propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5314075509300511480, guid: 57d3c990815ad1b4387cbb621ce378c9,
         type: 3}
       propertyPath: _groundCheckDistance

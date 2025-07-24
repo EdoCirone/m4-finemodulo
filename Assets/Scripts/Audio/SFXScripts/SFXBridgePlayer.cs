@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SFXBridge : MonoBehaviour
+public class SFXBridgePlayer : MonoBehaviour
 {
     [Header("Audio")]
     [SerializeField] private SFXPlayer _sfxPlayer;

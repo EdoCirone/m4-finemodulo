@@ -7,6 +7,8 @@ public class PlayerAnimatorController : MonoBehaviour
     [SerializeField] private string _paramNameForward = "forward";
     [SerializeField] private string _paramNameVerticalSpeed = "vSpeed";
     [SerializeField] private string _paramNameIsGrounded = "isGrounded";
+    [SerializeField] private string _paramNameHit = "hit";
+    [SerializeField] private string _paramNameFallDeath = "fallDeath";
     [SerializeField] private string _paramNameJump = "jump";
     [SerializeField] private float _paramRangeForward = 2f;
 
@@ -30,6 +32,18 @@ public class PlayerAnimatorController : MonoBehaviour
     public void OnLand()
     {
         _anim.SetBool(_paramNameIsGrounded, true);
+    }
+
+    public void OnHit()
+    {
+        Debug.Log("Trigger Hit chiamato");
+        _anim.SetTrigger(_paramNameHit);
+    }
+
+    public void OnFallDeath()
+    {
+        Debug.Log("Trigger fallDeath chiamato");
+        _anim.SetTrigger(_paramNameFallDeath);
     }
 
     private void Update()
