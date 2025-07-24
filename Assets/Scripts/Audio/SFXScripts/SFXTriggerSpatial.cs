@@ -9,9 +9,10 @@ public class SFXTriggerSpatial : MonoBehaviour
 
     public void Play()
     {
-        if (spatialSFX != null)
-            spatialSFX.PlaySFXAt(sfxName, transform.position, volume);
+        var spatial = spatialSFX ?? SFXSpatial.Instance;
+        if (spatial != null)
+            spatial.PlaySFXAt(sfxName, transform.position, volume);
         else
-            Debug.LogWarning("SFXSpatial non assegnato.");
+            Debug.LogWarning("SFXSpatial non trovato.");
     }
 }

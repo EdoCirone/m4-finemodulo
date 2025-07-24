@@ -54,6 +54,10 @@ MonoBehaviour:
     prefab: {fileID: 6108342435074331481, guid: 58180516f9b61b64fb08c73bdfa945fa,
       type: 3}
     size: 5
+  - tag: PooledAudio3D
+    prefab: {fileID: 6294463275154917637, guid: aa3b8ee64220a704f9f1b07f9fbfa540,
+      type: 3}
+    size: 5
 --- !u!114 &7165784675712504404
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,8 +10,19 @@ public class SFXSpatial : MonoBehaviour
 
     private Dictionary<string, AudioClip> sfxDict;
 
+    public static SFXSpatial Instance { get; private set; }
+
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject); // Evita duplicati
+        }
+
         sfxDict = new Dictionary<string, AudioClip>();
         foreach (var sfx in sfxList)
         {
