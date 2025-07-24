@@ -8,6 +8,9 @@ public class MusicManager : MonoBehaviour
     public static MusicManager instance;
     private AudioSource audioSource;
 
+    [Header("Music Parameters")]
+    [Range(0f, 1f)][SerializeField] private float _defaultVolume = 1f;
+
     [Header("Musics List")]
     public List<SceneMusic> musicPerScene;
 
@@ -21,7 +24,6 @@ public class MusicManager : MonoBehaviour
         {
 
             instance = this;
-            DontDestroyOnLoad(gameObject);
 
         }
         else
@@ -40,6 +42,7 @@ public class MusicManager : MonoBehaviour
 
         audioSource.playOnAwake = false;
         audioSource.spatialBlend = 0f; // forzo il suono in 2D
+        audioSource.volume = _defaultVolume;
 
     }
 

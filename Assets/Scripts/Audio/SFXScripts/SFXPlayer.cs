@@ -5,33 +5,35 @@ using UnityEngine;
 
 public class SFXPlayer : MonoBehaviour
 {
-    private AudioSource emitter;
+    private AudioSource _emitter;
 
-    [SerializeField] private List<NamedSFX> sfxList;
+    [SerializeField] private List<NamedSFX> _sfxList;
 
-    private Dictionary<string, AudioClip> sfxDict;
+    private Dictionary<string, AudioClip> _sfxDict;
 
     private void Awake()
     {
-        emitter = GetComponentInChildren<AudioSource>();
+        _emitter = GetComponent<AudioSource>();
+        if (_emitter == null)
+            _emitter = GetComponentInChildren<AudioSource>();
 
-        if (emitter == null)
+        if (_emitter == null)
         {
             Debug.LogError($"Nessun AudioSource trovato nei figli di {gameObject.name}");
             return;
         }
 
-        emitter.playOnAwake = false;
-        emitter.spatialBlend = 1f;// lo forzo in 3d per stare parato
+        _emitter.playOnAwake = false;
+        _emitter.spatialBlend = 1f;// lo forzo in 3d per stare parato
 
         //faccio il dizionario di SFX
 
-        sfxDict = new Dictionary<string, AudioClip>();
-        foreach (var sfx in sfxList)
+        _sfxDict = new Dictionary<string, AudioClip>();
+        foreach (var sfx in _sfxList)
         {
-            if (!sfxDict.ContainsKey(sfx.name))
+            if (!_sfxDict.ContainsKey(sfx.name))
             {
-                sfxDict.Add(sfx.name, sfx.clip);
+                _sfxDict.Add(sfx.name, sfx.clip);
             }
 
         }
@@ -40,13 +42,14 @@ public class SFXPlayer : MonoBehaviour
 
     public void PlaySFX(string sfxName, float volume = 1f)
     {
-        if (sfxDict.TryGetValue(sfxName, out AudioClip clip))
+        if (_sfxDict.TryGetValue(sfxName, out AudioClip clip))
         {
-            emitter.PlayOneShot(clip, volume);
+            Debug.Log($"Riproduco SFX '{sfxName}' a volume {volume}");
+            _emitter.PlayOneShot(clip, volume);
         }
         else
         {
-            Debug.LogWarning($"non c'è il suono {sfxName}");
+            Debug.LogWarning($"Clip '{sfxName}' non trovato nel dizionario SFX di {gameObject.name}");
         }
     }
 
