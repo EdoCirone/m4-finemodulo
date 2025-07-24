@@ -42,7 +42,7 @@ public class PlatformAttachmentHandler : MonoBehaviour
     {
         if (_currentPlatform != null && collision.collider.gameObject == _currentPlatform.gameObject)
         {
-            Debug.Log("PlatformAttachmentHandler: Uscito dalla piattaforma " + _currentPlatform.name);
+            //Debug.Log("PlatformAttachmentHandler: Uscito dalla piattaforma " + _currentPlatform.name);
             _currentPlatform = null;
         }
     }

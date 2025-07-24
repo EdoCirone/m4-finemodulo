@@ -3,6 +3,9 @@ Questa cartella contiene tutti gli script C# del progetto, organizzati in sottoc
 
 Ogni sottocartella rappresenta un dominio logico del gioco (camera, player, danno, ecc). L'obbiettivo è avere script modulari, chiari e facilmente riutilizzabili.
 
+  Audio
+Contiene gli script che gestiscono Musiche e SFX
+
   Camera
 Contiene gli script che gestiscono il comportamento della telecamera.
 

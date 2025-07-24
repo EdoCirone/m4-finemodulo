@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Events;
+
 
 public class BasicShooter : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class BasicShooter : MonoBehaviour
     [SerializeField] string _bulletTag = "basic"; // Scegli il tipo di proiettile dal PoolManager
     [SerializeField] private float _coolDown = 1f;
 
+    [SerializeField] private UnityEvent _onShoot;
 
     private float _lastShootTime;
     protected Collider[] hits = new Collider[1];
@@ -54,6 +57,7 @@ public class BasicShooter : MonoBehaviour
         if (bullet != null)
         {
             bullet.Shoot(shootDirection);
+            _onShoot?.Invoke();
         }
     }
 
