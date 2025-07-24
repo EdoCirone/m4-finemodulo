@@ -111,4 +111,4 @@ MonoBehaviour:
   _continuousMovement: 1
   _frequency: 5
   _movementValue: 10
-  _movementAxis: {x: 1, y: 0, z: 0}
+  _movementAxis: {x: 0, y: 0, z: 1}
