@@ -1,3 +1,4 @@
+Cartella MusicScripts
 
 Questa sottocartella contiene gli script per la gestione della musica di sottofondo.
 
