@@ -25,9 +25,10 @@ public class PlayerAnimatorController : MonoBehaviour
     }
     private void Update()
     {
-        float v = _playerController.MoveInput.y;
+        Vector2 moveInput = _playerController.MoveInput;
 
-        _anim.SetFloat(_paramNameForward, v * _paramRangeForward);
+        float movementMagnitude = moveInput.magnitude;
+        _anim.SetFloat(_paramNameForward, movementMagnitude * _paramRangeForward);
         _anim.SetFloat(_paramNameVerticalSpeed, _rb.velocity.y);
         _anim.SetBool(_paramNameIsGrounded, _playerController.IsGroundedNow);
     }
