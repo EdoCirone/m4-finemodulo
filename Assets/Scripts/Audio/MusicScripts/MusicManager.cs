@@ -41,6 +41,7 @@ public class MusicManager : MonoBehaviour
         }
 
         audioSource.playOnAwake = false;
+        audioSource.loop = true;
         audioSource.spatialBlend = 0f; // forzo il suono in 2D
         audioSource.volume = _defaultVolume;
 
