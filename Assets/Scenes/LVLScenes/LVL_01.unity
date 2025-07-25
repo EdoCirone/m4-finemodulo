@@ -1812,11 +1812,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 261377984448094100, guid: 7b9f1b9127a41ad4390d70d1f73cc38d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1322421295}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b9f1b9127a41ad4390d70d1f73cc38d, type: 3}
 --- !u!4 &1249663020 stripped
 Transform:
@@ -1989,26 +1985,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1322421292 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 261377984448094100, guid: 7b9f1b9127a41ad4390d70d1f73cc38d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1249663019}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1322421295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1322421292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8afb4338d4a2d95478d450bcfa1644bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _damage: 1
-  _deactivateOnHit: 1
 --- !u!1001 &1336392252
 PrefabInstance:
   m_ObjectHideFlags: 0

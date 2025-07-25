@@ -55,7 +55,10 @@ public class PlayerAnimatorController : MonoBehaviour
     }
 
 
-
+    public void ForceGrounded()
+    {
+        _anim.SetBool(_paramNameIsGrounded, true);
+    }
 
 
 }

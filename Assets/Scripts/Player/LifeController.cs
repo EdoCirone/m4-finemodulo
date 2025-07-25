@@ -69,7 +69,8 @@ public class LifeController : MonoBehaviour
         _onDeath?.Invoke();
         UIManager.Instance.UpdateLife(_maxHp, _maxHp);
         Debug.Log("Sei morto!");
-        Destroy(gameObject);
+
+        StartCoroutine(RespawnCoroutine());
     }
 
     private void DieForFalling()
@@ -82,6 +83,12 @@ public class LifeController : MonoBehaviour
         StartCoroutine(FallDeathPauseCoroutine());
     }
 
+    public void Revive()
+    {
+        _isDead = false;
+        _hp = _maxHp;
+        UIManager.Instance.UpdateLife(_hp, _maxHp);
+    }
     private IEnumerator HitPauseAndHandleDamage()
     {
 
@@ -112,18 +119,30 @@ public class LifeController : MonoBehaviour
     {
         Debug.Log("FallDeathCoroutine: inizio animazione");
 
-        _onFallDeath?.Invoke(); // parte la fallDeath animazione
+        _onFallDeath?.Invoke(); 
 
-        yield return new WaitForSeconds(_fallDeathPauseDuration); // tempo normale
+        yield return new WaitForSeconds(_fallDeathPauseDuration); 
 
         Debug.Log("FallDeathCoroutine: mostra Game Over");
 
-        UIManager.Instance.UpdateLife(_maxHp, _maxHp); // opzionale reset
-        MenuManager.Instance.ShowGameOverMenu(); // mostra UI
-        Destroy(gameObject); // se vuoi rimuovere il player
+        UIManager.Instance.UpdateLife(_maxHp, _maxHp); 
+        MenuManager.Instance.ShowGameOverMenu();
+        StartCoroutine(RespawnCoroutine());
     }
 
+    private IEnumerator RespawnCoroutine()
+    {
 
+        gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(0.1f);
+
+
+        if (CheckpointManager.Instance.HasCheckpoint())
+            _respawnable?.RespawnHere(CheckpointManager.Instance.GetCurrentCheckpoint());
+        else
+            _respawnable?.RespawnHere(null);
+    }
 
     private void OnDrawGizmos()
     {

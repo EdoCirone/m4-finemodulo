@@ -137,6 +137,16 @@ public class PlayerController : MonoBehaviour
         return Physics.CheckSphere(origin, _groundCheckRadius, _groundLayer);
     }
 
+    //Resetto allo spawn per un bug con la bomba
+    public void ForceReset()
+    {
+        _moveInput = Vector2.zero;
+        _jumpRequested = false;
+        _currentJumpCount = 0;
+
+        _wasGroundedLastFrame = true;
+    }
+
     public bool IsGroundedNow => IsGrounded();
 
     public Vector2 MoveInput => _moveInput;
