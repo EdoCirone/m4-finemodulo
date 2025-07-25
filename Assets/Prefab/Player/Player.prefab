@@ -108,7 +108,8 @@ MonoBehaviour:
   _rotationSpeed: 10
   _jumpHeight: 1
   _maxJumpCount: 2
-  _groundCheckRadius: 0.3
+  _jumpCooldownAfterLanding: 0.5
+  _groundCheckRadius: 0.05
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8

@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [Header("Salto")]
     [SerializeField] private float _jumpHeight = 5f;
     [SerializeField] private int _maxJumpCount = 2;
+    [SerializeField] private float _jumpCooldownAfterLanding = 0.2f;
 
     [Header("Ground Checker")]
     [SerializeField] private float _groundCheckRadius = 0.3f;
@@ -27,6 +28,8 @@ public class PlayerController : MonoBehaviour
     private bool _jumpRequested;
     private bool _wasGroundedLastFrame = false;
     private int _currentJumpCount;
+    private float _lastGroundedTime = -Mathf.Infinity;
+
 
     private void Awake()
     {
@@ -94,13 +97,15 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
-        // Reset salti se a terra
         if (IsGrounded() && _rb.velocity.y <= 0.1f)
         {
             _currentJumpCount = 0;
         }
 
-        if (_jumpRequested && _currentJumpCount < _maxJumpCount)
+        bool canJump = _currentJumpCount < _maxJumpCount &&
+                       (IsGrounded() ? Time.time - _lastGroundedTime >= _jumpCooldownAfterLanding : true);
+
+        if (_jumpRequested && canJump)
         {
             _currentJumpCount++;
             _jumpRequested = false;
@@ -114,9 +119,8 @@ public class PlayerController : MonoBehaviour
 
             _onJump?.Invoke();
         }
-
-        // Se non posso saltare, mantengo la richiesta (non azzero)
     }
+
 
     private void CheckLanding()
     {
@@ -125,6 +129,7 @@ public class PlayerController : MonoBehaviour
         if (!_wasGroundedLastFrame && isGroundedNow && _rb.velocity.y <= 0.1f)
         {
             _onLand?.Invoke(); // chiama l'animazione, particelle, suoni ecc.
+            _lastGroundedTime = Time.time;
         }
 
         _wasGroundedLastFrame = isGroundedNow;
